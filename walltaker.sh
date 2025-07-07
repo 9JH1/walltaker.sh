@@ -7,7 +7,7 @@ for pid in $(pgrep -f ${0##*/}); do
   sleep 1
 done 
 
-id="46554" # default 
+id="1234" # default 
 save_wallpaper_path="$HOME/Pictures/Wallpapers/.walltaker/" # leave empty to not save wallpapers 
 delay=10
 user_agent="Wallpaper Engine"
@@ -77,19 +77,20 @@ while [[ 1 ]]; do
 		echo "Wallpaper Saved To: $location"
 
 		echo "Requesting wallpaper refresh"
-		eval $wallpaper_set_command &>/dev/null &)
+		# wait for wallpaper refresh
+		eval $wallpaper_set_command 
+
 		if [[ "$notifications" = "1" ]];then
 			# in my case this script is used along side another
 			# script that also sets the color theme of my wm so 
 			# having this notification AFTER we set the background 
 			# is important as it will show with the NEW wallpapers 
 			# color scheme instead of the old one.
-			notify-send "New Wallpaper From $set_by" "$description"
+			notify-send "New Wallpaper From $set_by" "$description" &>/dev/null
 		else 
 			echo "New Wallpaper From $set_by"
 			echo $description
 		fi 
-	fi
 	fi
 	sleep $delay
 done
